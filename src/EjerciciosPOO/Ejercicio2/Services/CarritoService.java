@@ -43,8 +43,11 @@ public class CarritoService {
 
                 }
                 if (productoEncontrado != null && productoEncontrado.getStock() >= carro.getCantidad()) {
-                    productoEncontrado.setCantidadAgregada(cantidad);
-                    carrito.add(productoEncontrado);
+                    Producto productoParaCarro = new Producto();
+                    productoParaCarro.setNombre(productoEncontrado.getNombre());
+                    productoParaCarro.setPrecio(productoEncontrado.getPrecio());
+                    productoParaCarro.setCantidadAgregada(cantidad);
+                    carrito.add(productoParaCarro);
                     productoEncontrado.setStock(productoEncontrado.getStock() - cantidad);
                     System.out.println("Producto agreegado correctamente");
                 } else {
@@ -62,13 +65,13 @@ public class CarritoService {
     public void eliminarProductoPorNombre() {
         System.out.println("que producto desea eliminar?");
         String produ = sca.next();
-        for (Producto pr : carrito) {
-            if (produ.toLowerCase().equals(pr.getNombre())) {
-                carrito.remove(pr);
-            } else {
-                System.out.println("No existe ese producto");
-            }
+        boolean eliminado = carrito.removeIf(pr -> pr.getNombre().equalsIgnoreCase(produ));
+        if(eliminado){
+            System.out.println("se elimino");
+        }else{
+            System.out.println("no se pudo eliminra");
         }
+
     }
 
     public double total() {
